@@ -54,6 +54,24 @@ public:
         return true;
     }
     
+    template<typename F>
+    bool pop(T &t, const F &predicate) {
+        typename std::deque<T>::reverse_iterator it;
+        std::unique_lock<std::mutex> lock(d_mutex);
+        conditionWait(cond_pop, lock, [this, &it, &predicate]{ 
+            it = std::find_if(d_queue.rbegin(), d_queue.rend(), predicate);
+            return it != d_queue.rend() || isStopped; 
+        });
+        if (isStopped) {
+            return false;
+        }
+        
+        t = std::move(*it);
+        d_queue.erase(std::next(it).base());
+        cond_push.notify_one();
+        return true;
+    }
+    
     bool isEmpty() const {
         std::lock_guard<std::mutex> lock(d_mutex);
         return d_queue.empty();
