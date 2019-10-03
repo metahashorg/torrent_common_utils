@@ -12,13 +12,17 @@ template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
 #define BEGIN_VARIANT(element) \
 std::visit([&](const auto &element) { \
-using ElementType = std::decay_t<decltype(element)>;
+using ElementType = std::decay_t<decltype(element)>; \
+if (false) { \
 
 #define END_VARIANT(variants) \
-else { \
+} else { \
     static_assert(always_false<ElementType>::value, "non-exhaustive visitor!"); \
 } \
 }, variants);
+
+#define CASE_VARIANT(type) \
+} else if constexpr (std::is_same_v<type, ElementType>) {
 
 }
 
