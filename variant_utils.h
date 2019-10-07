@@ -13,7 +13,7 @@ template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 #define BEGIN_VARIANT(element) \
 std::visit([&](const auto &element) { \
 using ElementType = std::decay_t<decltype(element)>; \
-if (false) { \
+if constexpr (false) { \
 
 #define END_VARIANT(variants) \
 } else { \
