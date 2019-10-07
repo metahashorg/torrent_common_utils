@@ -11,13 +11,13 @@ template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
 #define BEGIN_VARIANT(element) \
-std::visit([&](const auto &element) { \
+std::visit([&](auto &element) { \
 using ElementType = std::decay_t<decltype(element)>; \
 if constexpr (false) { \
 
 #define END_VARIANT(variants) \
 } else { \
-    static_assert(always_false<ElementType>::value, "non-exhaustive visitor!"); \
+    static_assert(common::always_false<ElementType>::value, "non-exhaustive visitor!"); \
 } \
 }, variants);
 
