@@ -75,7 +75,7 @@ void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool
         timeFormat = "%datetime{%M:%d_%H:%m:%s:%g} ";
     }
     
-    defaultConf.set(el::Level::Global, el::ConfigurationType::Format, timeFormat + "%level %thread: %msg");
+    defaultConf.set(el::Level::Global, el::ConfigurationType::Format, timeFormat + "%level: %msg");
     if (isConsole) {
         defaultConf.set(el::Level::Global, el::ConfigurationType::ToStandardOutput, "true");
     } else {
@@ -85,7 +85,7 @@ void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool
     defaultConf.set(el::Level::Global, el::ConfigurationType::Filename, fileName);
     defaultConf.set(el::Level::Global, el::ConfigurationType::MaxLogFileSize, std::to_string(500 * 1024 * 1024));
     
-    defaultConf.set(el::Level::Debug, el::ConfigurationType::Format, timeFormat + "%level %thread: %msg");
+    defaultConf.set(el::Level::Debug, el::ConfigurationType::Format, timeFormat + "%level: %msg");
     if (isConsole) {
         defaultConf.set(el::Level::Debug, el::ConfigurationType::ToStandardOutput, "true");
     } else {
