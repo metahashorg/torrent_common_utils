@@ -25,6 +25,8 @@ void checkStopSignal();
 
 void sleep(const seconds &dur);
 
+void sleep(const std::atomic<bool> &checkedVariable, const seconds &dur);
+
 void sleepMs(const milliseconds &dur);
 
 template<class Predicate>

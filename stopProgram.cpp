@@ -36,9 +36,9 @@ void checkStopSignal() {
     checkStopSignal(isStopSignalCalled);
 }
 
-void sleep(const seconds &dur) {
+void sleep(const std::atomic<bool> &checkedVariable, const seconds &dur) {
     const time_point beginTime = common::now();
-    while (true) {
+    while (!checkedVariable.load()) {
         checkStopSignal();
         const time_point now = common::now();
         if (now - beginTime >= dur) {
@@ -48,6 +48,9 @@ void sleep(const seconds &dur) {
     }
 }
 
+void sleep(const seconds &dur) {
+    sleep(std::atomic<bool>(true), dur);
+}
 
 void sleepMs(const milliseconds &dur) {
     std::this_thread::sleep_for(dur);
