@@ -8,25 +8,20 @@ git_get_commit_datetime(GIT_DATE)
 
 configure_file("${CMAKE_CURRENT_LIST_DIR}/cmake_modules/GitSHA1.cpp.in" "${CMAKE_BINARY_DIR}/GitSHA1.cpp" @ONLY)
 
-set(COMMON_UTILS_SOURCES 
-    ${CMAKE_CURRENT_LIST_DIR}/curlWrapper.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/jsonUtils.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/log.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/network_utils.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/stopProgram.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/tcmalloc_management.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/logger/easylogging++.cc
-    ${CMAKE_BINARY_DIR}/GitSHA1.cpp
-)
-
 set(COMMON_UTILS_SOURCES_WITHOUT_GITSHA 
     ${CMAKE_CURRENT_LIST_DIR}/curlWrapper.cpp
     ${CMAKE_CURRENT_LIST_DIR}/jsonUtils.cpp
     ${CMAKE_CURRENT_LIST_DIR}/log.cpp
     ${CMAKE_CURRENT_LIST_DIR}/network_utils.cpp
     ${CMAKE_CURRENT_LIST_DIR}/stopProgram.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/duration.cpp
     ${CMAKE_CURRENT_LIST_DIR}/tcmalloc_management.cpp
     ${CMAKE_CURRENT_LIST_DIR}/logger/easylogging++.cc
+)
+
+set(COMMON_UTILS_SOURCES 
+    ${COMMON_UTILS_SOURCES_WITHOUT_GITSHA}
+    ${CMAKE_BINARY_DIR}/GitSHA1.cpp
 )
 
 set(COMMON_UTILS_GITSHA

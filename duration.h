@@ -2,6 +2,7 @@
 #define DURATION_H_
 
 #include <chrono>
+#include <string>
 
 using namespace std::chrono_literals;
 using namespace std::literals;
@@ -48,6 +49,8 @@ inline size_t getTimestampForDay(size_t dayNumber) {
     const hours hour(dayNumber * 24);
     return milliseconds(hour).count();
 }
+
+std::string currentDateToStr(const std::string &format);
 
 class Timer {
 public:
