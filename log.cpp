@@ -75,6 +75,9 @@ void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool
         timeFormat = "%datetime{%M:%d_%H:%m:%s:%g} ";
     }
     
+    //defaultConf.set(el::Level::Info, el::ConfigurationType::Enabled, "false");
+    //defaultConf.set(el::Level::Debug, el::ConfigurationType::Enabled, "false");
+    
     defaultConf.set(el::Level::Global, el::ConfigurationType::Format, timeFormat + "%level: %msg");
     if (isConsole) {
         defaultConf.set(el::Level::Global, el::ConfigurationType::ToStandardOutput, "true");
