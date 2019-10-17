@@ -12,11 +12,11 @@ namespace fs = std::experimental::filesystem;
 
 namespace common {
 
-void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool isAutoSpacing, bool isTime) {
-    const std::string fileName = folder + "/logger.txt";
-    const std::string fileNameDebug = folder + "/logger_debug.txt";
+void configureLogInternal(const LogBuilder &builder) {
+    const std::string fileName = builder.folder + "/logger.txt";
+    const std::string fileNameDebug = builder.folder + "/logger_debug.txt";
     
-    if (isAppend) {
+    if (builder.isAppend) {
         const size_t countBackupFiles = 5;
         
         const auto makeNameFile = [](const std::string &fileName, size_t i) {
@@ -57,7 +57,7 @@ void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool
     el::Loggers::addFlag(el::LoggingFlag::ColoredTerminalOutput);
     el::Loggers::addFlag(el::LoggingFlag::MultiLoggerSupport);
     el::Loggers::addFlag(el::LoggingFlag::CreateLoggerAutomatically);
-    if (isAutoSpacing) {
+    if (builder.isAutoSpacing) {
         el::Loggers::addFlag(el::LoggingFlag::AutoSpacing);
     } else {
         el::Loggers::removeFlag(el::LoggingFlag::AutoSpacing);
@@ -71,15 +71,19 @@ void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool
     defaultConf.setToDefault();
     
     std::string timeFormat;
-    if (isTime) {
+    if (builder.isTime) {
         timeFormat = "%datetime{%M:%d_%H:%m:%s:%g} ";
     }
     
-    //defaultConf.set(el::Level::Info, el::ConfigurationType::Enabled, "false");
-    //defaultConf.set(el::Level::Debug, el::ConfigurationType::Enabled, "false");
+    if (builder.isDisabledInfo) {
+        defaultConf.set(el::Level::Info, el::ConfigurationType::Enabled, "false");
+    }
+    if (builder.isDisabledDebug) {
+        defaultConf.set(el::Level::Debug, el::ConfigurationType::Enabled, "false");
+    }
     
     defaultConf.set(el::Level::Global, el::ConfigurationType::Format, timeFormat + "%level: %msg");
-    if (isConsole) {
+    if (builder.isConsole) {
         defaultConf.set(el::Level::Global, el::ConfigurationType::ToStandardOutput, "true");
     } else {
         defaultConf.set(el::Level::Global, el::ConfigurationType::ToStandardOutput, "false");
@@ -89,7 +93,7 @@ void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool
     defaultConf.set(el::Level::Global, el::ConfigurationType::MaxLogFileSize, std::to_string(500 * 1024 * 1024));
     
     defaultConf.set(el::Level::Debug, el::ConfigurationType::Format, timeFormat + "%level: %msg");
-    if (isConsole) {
+    if (builder.isConsole) {
         defaultConf.set(el::Level::Debug, el::ConfigurationType::ToStandardOutput, "true");
     } else {
         defaultConf.set(el::Level::Debug, el::ConfigurationType::ToStandardOutput, "false");
@@ -101,8 +105,20 @@ void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool
     el::Loggers::reconfigureLogger("default", defaultConf);
 }
 
+LogBuilder configureLog(const std::string &folder) {
+    return LogBuilder(folder);
+}
+
+void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool isAutoSpacing, bool isTime) {
+    configureLog(folder).append(isAppend).console(isConsole).autoSpacing(isAutoSpacing).printTime(isTime);
+}
+
 void flushLogsAll() {
     el::Loggers::flushAll();
+}
+
+LogBuilder::~LogBuilder() {
+    configureLogInternal(*this);
 }
 
 }
