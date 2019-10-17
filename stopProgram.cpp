@@ -49,7 +49,7 @@ void sleep(const std::atomic<bool> &checkedVariable, const seconds &dur) {
 }
 
 void sleep(const seconds &dur) {
-    sleep(std::atomic<bool>(true), dur);
+    sleep(std::atomic<bool>(false), dur);
 }
 
 void sleepMs(const milliseconds &dur) {
