@@ -12,6 +12,8 @@ namespace fs = std::experimental::filesystem;
 
 namespace common {
 
+static el::Configurations defaultConf;
+    
 void configureLogInternal(const LogBuilder &builder) {
     const std::string fileName = builder.folder + "/logger.txt";
     const std::string fileNameDebug = builder.folder + "/logger_debug.txt";
@@ -67,7 +69,6 @@ void configureLogInternal(const LogBuilder &builder) {
     /*el::Logger* debugLogger = el::Loggers::getLogger("debug");
     (void)debugLogger;*/
     
-    el::Configurations defaultConf;
     defaultConf.setToDefault();
     
     std::string timeFormat;
@@ -111,6 +112,16 @@ LogBuilder configureLog(const std::string &folder) {
 
 void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool isAutoSpacing, bool isTime) {
     configureLog(folder).append(isAppend).console(isConsole).autoSpacing(isAutoSpacing).printTime(isTime);
+}
+
+void disableDebug() {
+    defaultConf.set(el::Level::Debug, el::ConfigurationType::Enabled, "false");
+    el::Loggers::reconfigureLogger("default", defaultConf);
+}
+
+void disableInfo() {
+    defaultConf.set(el::Level::Info, el::ConfigurationType::Enabled, "false");
+    el::Loggers::reconfigureLogger("default", defaultConf);
 }
 
 void flushLogsAll() {

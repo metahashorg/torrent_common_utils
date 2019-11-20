@@ -70,6 +70,10 @@ LogBuilder configureLog(const std::string &folder);
 
 void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool isAutoSpacing, bool isTime);
 
+void disableDebug();
+
+void disableInfo();
+
 void flushLogsAll();
 
 struct EmptyLog {
