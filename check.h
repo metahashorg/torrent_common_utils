@@ -2,16 +2,15 @@
 #define CHECK_H_
 
 #include <string>
+#include <stdexcept>
 
 namespace common {
 
 using exception = std::string;
 
-struct UserException {
-    std::string exception;
-    
+struct UserException: public std::runtime_error {
     UserException(const std::string &exception)
-        : exception(exception)
+        : std::runtime_error(exception)
     {}
 };
 
