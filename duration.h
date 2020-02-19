@@ -75,7 +75,15 @@ public:
             return std::chrono::duration_cast<milliseconds>(stoppedTime - beginTime);        
         }
     }
-    
+
+    microseconds countMcs() const {
+        if (!isStopped) {
+            return std::chrono::duration_cast<microseconds>(common::now() - beginTime);
+        } else {
+            return std::chrono::duration_cast<microseconds>(stoppedTime - beginTime);
+        }
+    }
+
 private:
     
     const time_point beginTime;
