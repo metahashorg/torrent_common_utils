@@ -3,6 +3,7 @@
 
 #include <string>
 #include <optional>
+#include <functional>
 
 #include "check.h"
 
