@@ -69,7 +69,7 @@ T getOpt(const libconfig::Setting &obj, std::string_view name, T defaultValue) {
 template<typename T, typename Exception=ConfigException>
 decltype(auto) get(const libconfig::Setting &obj) {
     const auto result = getOpt<T>(obj);
-    CHECK1(result.has_value(), std::string("Incorrect config: ") + obj.getPath() + " not found", Exception);
+    CHECK1(result.has_value(), std::string("Incorrect config: ") + std::string(obj.getSourceFile()) + "/" + obj.getPath() + " not found", Exception);
     const auto value = result.value();
     if constexpr (std::is_same_v<std::decay_t<decltype(value)>, RefCfg>) {
         return value.get();
@@ -80,7 +80,7 @@ decltype(auto) get(const libconfig::Setting &obj) {
 
 template<typename T, typename Exception=ConfigException>
 decltype(auto) get(const libconfig::Setting &obj, std::string_view name) {
-    CHECK1(obj.exists(name.data()), std::string("Incorrect config: ") + obj.getPath() + "/" + std::string(name) + " not found", Exception);
+    CHECK1(obj.exists(name.data()), std::string("Incorrect config: ") + std::string(obj.getSourceFile()) + "/" + obj.getPath() + "/" + std::string(name) + " not found", Exception);
     return get<T>(obj[name.data()]);
 }
 
