@@ -29,6 +29,8 @@ void sleep(const std::atomic<bool> &checkedVariable, const seconds &dur);
 
 void sleepMs(const milliseconds &dur);
 
+void waitStop();
+
 template<class Predicate>
 inline bool conditionWait(const std::atomic<bool> &checkedVariable, std::condition_variable &cond, std::unique_lock<std::mutex> &lock, const Predicate &predicate, bool isTimeout) {
     while (true) {
