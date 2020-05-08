@@ -69,13 +69,7 @@ void whileTrue() {
 }
 
 void waitStop() {
-    try {
-        while (true) {
-            sleep(1s);
-        }
-    } catch (const StopException&) {
-        return;
-    }
+    whileTrue();
 }
 
 }
