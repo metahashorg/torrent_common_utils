@@ -72,4 +72,8 @@ void waitStop() {
     whileTrue();
 }
 
+void stopProgram() {
+    isStopSignalCalled = true;
+}
+
 }

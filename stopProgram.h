@@ -29,7 +29,11 @@ void sleep(const std::atomic<bool> &checkedVariable, const seconds &dur);
 
 void sleepMs(const milliseconds &dur);
 
+void whileTrue();
+
 void waitStop();
+
+void stopProgram();
 
 template<class Predicate>
 inline bool conditionWait(const std::atomic<bool> &checkedVariable, std::condition_variable &cond, std::unique_lock<std::mutex> &lock, const Predicate &predicate, bool isTimeout) {
@@ -54,8 +58,6 @@ template<class Predicate>
 inline bool conditionWaitTimeout(std::condition_variable &cond, std::unique_lock<std::mutex> &lock, const Predicate &predicate) {
     return conditionWait(isStopSignalCalled, cond, lock, predicate, true);
 }
-
-void whileTrue();
 
 }
 
