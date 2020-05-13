@@ -31,6 +31,11 @@ void configureLogInternal(const LogBuilder &builder) {
         };
         
         const auto processOneFile = [&gen, countBackupFiles](const std::string &fileName) {
+            const size_t sizeFile = fs::file_size(fileName);
+            if (sizeFile == 0) {
+                return;
+            }
+
             std::vector<std::string> files;
             files.push_back(fileName);
             std::generate_n(std::back_inserter(files), countBackupFiles, std::bind(gen, fileName));
