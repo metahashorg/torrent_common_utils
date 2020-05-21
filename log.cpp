@@ -31,9 +31,11 @@ void configureLogInternal(const LogBuilder &builder) {
         };
         
         const auto processOneFile = [&gen, countBackupFiles](const std::string &fileName) {
-            const size_t sizeFile = fs::file_size(fileName);
-            if (sizeFile == 0) {
-                return;
+            if (fs::exists(fileName)) {
+                const size_t sizeFile = fs::file_size(fileName);
+                if (sizeFile == 0) {
+                    return;
+                }
             }
 
             std::vector<std::string> files;
