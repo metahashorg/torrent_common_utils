@@ -5,20 +5,17 @@
 
 #include <string>
 
-#include "OopUtils.h"
-
 namespace common {
 
-class LogBuilder: public no_copyable, public no_moveable {
-    friend void configureLogInternal(const LogBuilder &builder);
+class LogBuilder {
+    friend void configureLog(const LogBuilder &builder);
 public:
     
-    LogBuilder(const std::string &folder)
-        : folder(folder)
-    {}
-    
-    ~LogBuilder();
-    
+    LogBuilder& setFolder(const std::string &value) {
+        folder = value;
+        return *this;
+    }
+
     LogBuilder& append(bool value) {
         isAppend = value;
         return *this;
@@ -51,7 +48,7 @@ public:
     
 protected:
     
-    const std::string folder;
+    std::string folder;
     
     bool isAppend = true;
     
@@ -66,7 +63,9 @@ protected:
     bool isDisabledInfo = false;
 };
 
-LogBuilder configureLog(const std::string &folder);
+LogBuilder makeLog(const std::string &folder);
+
+void configureLog(const LogBuilder &builder);
 
 void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool isAutoSpacing, bool isTime);
 

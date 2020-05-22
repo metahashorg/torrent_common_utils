@@ -14,7 +14,7 @@ namespace common {
 
 static el::Configurations defaultConf;
     
-void configureLogInternal(const LogBuilder &builder) {
+void configureLog(const LogBuilder &builder) {
     const std::string fileName = builder.folder + "/logger.txt";
     const std::string fileNameDebug = builder.folder + "/logger_debug.txt";
     
@@ -113,12 +113,13 @@ void configureLogInternal(const LogBuilder &builder) {
     el::Loggers::reconfigureLogger("default", defaultConf);
 }
 
-LogBuilder configureLog(const std::string &folder) {
-    return LogBuilder(folder);
+LogBuilder makeLog(const std::string &folder) {
+    return LogBuilder().setFolder(folder);
 }
 
 void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool isAutoSpacing, bool isTime) {
-    configureLog(folder).append(isAppend).console(isConsole).autoSpacing(isAutoSpacing).printTime(isTime);
+    LogBuilder conf = makeLog(folder).append(isAppend).console(isConsole).autoSpacing(isAutoSpacing).printTime(isTime);
+    configureLog(conf);
 }
 
 void disableDebug() {
@@ -133,10 +134,6 @@ void disableInfo() {
 
 void flushLogsAll() {
     el::Loggers::flushAll();
-}
-
-LogBuilder::~LogBuilder() {
-    configureLogInternal(*this);
 }
 
 }
