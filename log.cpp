@@ -8,13 +8,18 @@
 
 INITIALIZE_EASYLOGGINGPP
 
+static bool initialized = false;
+
 namespace fs = std::experimental::filesystem;
 
 namespace common {
 
 static el::Configurations defaultConf;
     
-void configureLog(const LogBuilder &builder) {
+LogInitResult configureLog(const LogBuilder &builder) {
+    if (initialized) {
+        return LogInitResult::AlreadyInitialized;
+    }
     const std::string fileName = builder.folder + "/logger.txt";
     const std::string fileNameDebug = builder.folder + "/logger_debug.txt";
     
@@ -111,15 +116,17 @@ void configureLog(const LogBuilder &builder) {
     defaultConf.set(el::Level::Debug, el::ConfigurationType::MaxLogFileSize, std::to_string(500 * 1024 * 1024));
     
     el::Loggers::reconfigureLogger("default", defaultConf);
+    initialized = true;
+    return LogInitResult::Ok;
 }
 
 LogBuilder makeLog(const std::string &folder) {
     return LogBuilder().setFolder(folder);
 }
 
-void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool isAutoSpacing, bool isTime) {
+LogInitResult configureLog(const std::string &folder, bool isAppend, bool isConsole, bool isAutoSpacing, bool isTime) {
     LogBuilder conf = makeLog(folder).append(isAppend).console(isConsole).autoSpacing(isAutoSpacing).printTime(isTime);
-    configureLog(conf);
+    return configureLog(conf);
 }
 
 void disableDebug() {

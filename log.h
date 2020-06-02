@@ -7,8 +7,12 @@
 
 namespace common {
 
+enum class LogInitResult {
+    Ok, AlreadyInitialized
+};
+
 class LogBuilder {
-    friend void configureLog(const LogBuilder &builder);
+    friend LogInitResult configureLog(const LogBuilder &builder);
 public:
     
     LogBuilder& setFolder(const std::string &value) {
@@ -65,9 +69,11 @@ protected:
 
 LogBuilder makeLog(const std::string &folder);
 
-void configureLog(const LogBuilder &builder);
+[[nodiscard]]
+LogInitResult configureLog(const LogBuilder &builder);
 
-void configureLog(const std::string &folder, bool isAppend, bool isConsole, bool isAutoSpacing, bool isTime);
+[[nodiscard]]
+LogInitResult configureLog(const std::string &folder, bool isAppend, bool isConsole, bool isAutoSpacing, bool isTime);
 
 void disableDebug();
 
