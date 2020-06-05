@@ -14,6 +14,7 @@ using time_point_system = std::chrono::time_point<std::chrono::system_clock>;
 using milliseconds = std::chrono::milliseconds;
 using microseconds = std::chrono::microseconds;
 using seconds = std::chrono::seconds;
+using minutes = std::chrono::minutes;
 using hours = std::chrono::hours;
 using days = std::chrono::duration<long, std::ratio_multiply<hours::period, std::ratio<24>>::type>;
 
