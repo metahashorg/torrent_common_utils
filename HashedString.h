@@ -16,6 +16,11 @@ struct HashedString {
         , hashString(std::hash<std::string_view>()(s))
     {}
     
+    HashedString(const char* s)
+        : s(s)
+        , hashString(std::hash<std::string>()(s))
+    {}
+
     HashedString(const char *data, size_t size)
         : s(data, size)
         , hashString(std::hash<std::string_view>()(std::string_view(data, size)))
@@ -36,6 +41,10 @@ struct HashedString {
     }
     
     operator std::string() const {
+        return s;
+    }
+
+    const std::string& get() const {
         return s;
     }
 };
