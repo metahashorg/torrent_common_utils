@@ -27,6 +27,8 @@ void sleep(const seconds &dur);
 
 void sleep(const std::atomic<bool> &checkedVariable, const seconds &dur);
 
+void sleepUntil(const time_point_system &tp);
+
 void sleepMs(const milliseconds &dur);
 
 void whileTrue();

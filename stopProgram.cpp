@@ -48,8 +48,24 @@ void sleep(const std::atomic<bool> &checkedVariable, const seconds &dur) {
     }
 }
 
+void sleepUntil(const std::atomic<bool> &checkedVariable, const time_point_system &tp) {
+    const time_point beginTime = common::now();
+    while (!checkedVariable.load()) {
+        checkStopSignal();
+        const time_point_system now = common::nowSystem();
+        if (now >= tp) {
+            break;
+        }
+        std::this_thread::sleep_until(std::min(now + 1s, tp));
+    }
+}
+
 void sleep(const seconds &dur) {
     sleep(std::atomic<bool>(false), dur);
+}
+
+void sleepUntil(const time_point_system &tp) {
+    sleepUntil(std::atomic<bool>(false), tp);
 }
 
 void sleepMs(const milliseconds &dur) {
